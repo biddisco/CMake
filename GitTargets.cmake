@@ -50,6 +50,7 @@ add_custom_target(make-branch_${PROJECT_NAME}
   COMMENT "Create local branch ${BRANCH_VERSION}"
   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
   )
+set_target_properties(make-branch_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
 if(TARGET flatten_git_external)
   set(BRANCH_DEP flatten_git_external)
@@ -63,9 +64,11 @@ add_custom_target(branch_${PROJECT_NAME}
   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
   DEPENDS ${BRANCH_DEP}
   )
+set_target_properties(branch_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
 if(NOT TARGET branch)
   add_custom_target(branch)
+  set_target_properties(branch PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 endif()
 add_dependencies(branch branch_${PROJECT_NAME})
 
@@ -76,9 +79,11 @@ add_custom_target(cut_${PROJECT_NAME}
   COMMENT "Remove branch ${BRANCH_VERSION}"
   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
   )
+set_target_properties(cut_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
 if(NOT TARGET cut)
   add_custom_target(cut)
+  set_target_properties(cut PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 endif()
 add_dependencies(cut cut_${PROJECT_NAME})
 
@@ -113,9 +118,11 @@ add_custom_target(tag_${PROJECT_NAME}
   COMMENT "Add tag ${VERSION}"
   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
   )
+set_target_properties(tag_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
 if(NOT TARGET tag)
   add_custom_target(tag)
+  set_target_properties(tag PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 endif()
 add_dependencies(tag tag_${PROJECT_NAME})
 
@@ -126,9 +133,11 @@ add_custom_target(erase_${PROJECT_NAME}
   COMMENT "Remove tag ${VERSION}"
   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
   )
+set_target_properties(erase_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
 if(NOT TARGET erase)
   add_custom_target(erase)
+  set_target_properties(erase PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 endif()
 add_dependencies(erase erase_${PROJECT_NAME})
 
@@ -138,9 +147,11 @@ add_custom_target(retag_${PROJECT_NAME}
   COMMENT "Add tag ${VERSION}"
   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
   DEPENDS erase_${PROJECT_NAME})
+set_target_properties(retag_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
 if(NOT TARGET retag)
   add_custom_target(retag)
+  set_target_properties(retag PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 endif()
 add_dependencies(retag retag_${PROJECT_NAME})
 
@@ -154,9 +165,11 @@ add_custom_target(tarball-create_${PROJECT_NAME}
   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
   COMMENT "Creating ${TARBALL}"
   )
+set_target_properties(tarball-create_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
 if(NOT TARGET tarball-create)
   add_custom_target(tarball-create)
+  set_target_properties(tarball-create_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 endif()
 add_dependencies(tarball-create tarball-create_${PROJECT_NAME})
 
@@ -168,13 +181,16 @@ if(GZIP_EXECUTABLE)
     WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
     COMMENT "Compressing ${TARBALL}.gz"
   )
+  set_target_properties(tarball_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
   set(TARBALL_GZ "${TARBALL}.gz")
 else()
   add_custom_target(tarball_${PROJECT_NAME} DEPENDS tarball-create_${PROJECT_NAME})
+  set_target_properties(tarball_${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 endif()
 
 if(NOT TARGET tarball)
   add_custom_target(tarball)
+  set_target_properties(tarball PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 endif()
 add_dependencies(tarball tarball_${PROJECT_NAME})
 

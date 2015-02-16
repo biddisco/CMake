@@ -180,10 +180,13 @@ if(EXISTS ${GIT_EXTERNALS} AND NOT GIT_EXTERNAL_SCRIPT_MODE)
           # Create update script and target to bump external spec
           if(NOT TARGET update)
             add_custom_target(update)
+            set_target_properties(update PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
           endif()
           if(NOT TARGET update_git_external)
             add_custom_target(update_git_external)
+            set_target_properties(update_git_external PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
             add_custom_target(flatten_git_external)
+            set_target_properties(flatten_git_external PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
             add_dependencies(update update_git_external)
           endif()
 
@@ -202,6 +205,7 @@ if(EXISTS ${GIT_EXTERNALS} AND NOT GIT_EXTERNAL_SCRIPT_MODE)
               COMMAND ${CMAKE_COMMAND} -DGIT_EXTERNAL_SCRIPT_MODE=1 -P ${GIT_EXTERNAL_SCRIPT}
               COMMENT "Recreate ${GIT_EXTERNALS_BASE}"
               WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+            set_target_properties(${GIT_EXTERNAL_TARGET} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
           endif()
 
           set(GIT_EXTERNAL_SCRIPT
@@ -225,6 +229,7 @@ endif()")
             COMMENT "Update ${REPO} in ${GIT_EXTERNALS_BASE}"
             DEPENDS ${GIT_EXTERNAL_TARGET}
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+          set_target_properties(update_git_external_${GIT_EXTERNAL_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
           add_dependencies(update_git_external
             update_git_external_${GIT_EXTERNAL_NAME})
 
@@ -243,6 +248,7 @@ endif()")
             COMMENT "Flatten ${REPO} into ${DIR}"
             DEPENDS make-branch
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}")
+          set_target_properties(flatten_git_external_${GIT_EXTERNAL_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
           add_dependencies(flatten_git_external
             flatten_git_external_${GIT_EXTERNAL_NAME})
         endif()
