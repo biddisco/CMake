@@ -177,6 +177,7 @@ if(EXISTS ${GIT_EXTERNALS} AND NOT GIT_EXTERNAL_SCRIPT_MODE)
           # pull in identified external
           git_external(${DIR} ${REPO} ${TAG} ${VARIABLE})
 
+if (NOT GIT_EXTERNAL_NO_UPDATE_TARGETS)
           # Create update script and target to bump external spec
           if(NOT TARGET update)
             add_custom_target(update)
@@ -252,6 +253,7 @@ endif()")
           add_dependencies(flatten_git_external
             flatten_git_external_${GIT_EXTERNAL_NAME})
         endif()
+endif()
       endif()
     endif()
   endforeach()
